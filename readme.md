@@ -9,7 +9,7 @@
 - python3.7
   - Anaconda入れました。インストール方法は割愛  
   ubuntuにAnacondaインストールした時のパス設定とかはうまいことやること
-  - Selenium
+- Selenium
   - 以下コマンドでインストール
     ~~~
     pip install selenium
