@@ -9,41 +9,40 @@ options = webdriver.ChromeOptions()
 options.add_argument('--headless')
 options.add_argument("--no-sandbox")
 
-driver = webdriver.Chrome()
-#driver = webdriver.Chrome(options=options)
+# driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=options)
 
 # Open Rakuten-keiba web page
 driver.get('https://keiba.rakuten.co.jp/')
-print(driver.title)
 
-print(driver.current_url)
-# Click "入金" button
-driver.find_element_by_id('noBalanceStatus').click()
+try:
+    # Click "入金" button
+    driver.find_element_by_id('noBalanceStatus').click()
 
-# Waiting for open the new tab page
-time.sleep(20)
+    # Waiting for open the new tab page
+    time.sleep(20)
 
-# Change tab
-handle_array = driver.window_handles
-driver.switch_to.window(handle_array[1])
-driver.save_screenshot('tmp.png')
+    # Change tab
+    handle_array = driver.window_handles
+    driver.switch_to.window(handle_array[1])
 
-print(driver.current_url)
+    # Inpit user name and Password 
+    driver.find_element_by_id('loginInner_u').send_keys(RAKUTEN_ID)
+    driver.find_element_by_id('loginInner_p').send_keys(RAKUTEN_PW)
 
-# Inpit user name and Password 
-driver.find_element_by_id('loginInner_u').send_keys(RAKUTEN_ID)
-driver.find_element_by_id('loginInner_p').send_keys(RAKUTEN_PW)
+    # Click "login" button
+    driver.find_element_by_css_selector('#loginInner > p:nth-child(3) > input').click()
 
-# Click "login" button
-driver.find_element_by_css_selector('#loginInner > p:nth-child(3) > input').click()
+    # Input depositting price
+    driver.find_element_by_id('depositingInputPrice').send_keys('100')
+    driver.find_element_by_id('depositingInputButton').click()
 
-# Input depositting price
-driver.find_element_by_id('depositingInputPrice').send_keys('100')
-driver.find_element_by_id('depositingInputButton').click()
+    # Input PIN
+    driver.find_element_by_css_selector('#depositingConfirmForm > div > table:nth-child(3) > tbody > tr > td > div.inputArea > input.tealeaf_masking.definedNumber').send_keys(RAKUTEN＿PIN)
+    driver.find_element_by_id('depositingConfirmButton').click()
 
-# Input PIN
-driver.find_element_by_css_selector('#depositingConfirmForm > div > table:nth-child(3) > tbody > tr > td > div.inputArea > input.tealeaf_masking.definedNumber').send_keys(RAKUTEN＿PIN)
-#driver.find_element_by_id('depositingConfirmButton').click()
+except:
+    print("Error!!")
 
 driver.save_screenshot('results.png')
 
